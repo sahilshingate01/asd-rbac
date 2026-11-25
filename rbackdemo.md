@@ -145,8 +145,8 @@ You can also test manually with Postman, Thunder Client or curl (see `README.md`
 
 ## Submission checklist
 
-- [ ] `POST /login` returns a token containing `id` and `role`
-- [ ] `authenticate` returns 401 for a missing or invalid token and sets `req.user`
-- [ ] `authorize(...roles)` returns 403 for wrong roles and calls `next()` for allowed ones
-- [ ] (Bonus) `DELETE /posts/:id` lets owners and admins delete, returns 403 for everyone else
-- [ ] `npm test` shows **All tests passed**
+- [x] `POST /login` returns a token containing `id` and `role`
+- [x] `authenticate` returns 401 for a missing or invalid token and sets `req.user`
+- [x] `authorize(...roles)` returns 403 for wrong roles and calls `next()` for allowed ones
+- [x] (Bonus) `DELETE /posts/:id` lets owners and admins delete, returns 403 for everyone else
+- [x] `npm test` shows **All tests passed**
