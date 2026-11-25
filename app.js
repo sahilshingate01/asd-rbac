@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("./config");
 const { users, posts } = require("./data/db");
 const authenticate = require("./middleware/authenticate");
 const authorize = require("./middleware/authorize");
@@ -8,7 +10,22 @@ app.use(express.json());
 
 
 app.post("/login", (req, res) => {
-  
+  const { username, password } = req.body;
+  const user = users.find(
+    (u) => u.username === username && u.password === password
+  );
+
+  if (!user) {
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+
+  const token = jwt.sign(
+    { id: user.id, username: user.username, role: user.role },
+    JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  return res.json({ token });
 });
 
 
