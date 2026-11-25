@@ -49,7 +49,23 @@ app.delete("/users/:id", authenticate, authorize("admin"), (req, res) => {
 // Users can delete their OWN posts; admins can delete ANY post.
 // ---------------------------------------------------------------
 app.delete("/posts/:id", authenticate, (req, res) => {
-  
+  const postId = parseInt(req.params.id, 10);
+  const post = posts.find((p) => p.id === postId);
+
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  const isOwner = req.user && req.user.id === post.authorId;
+  const isAdmin = req.user && req.user.role === "admin";
+
+  if (!isOwner && !isAdmin) {
+    return res
+      .status(403)
+      .json({ message: "Forbidden: You are not authorized to delete this post" });
+  }
+
+  return res.json({ message: `Post ${req.params.id} deleted` });
 });
 
 // Start the server only when run directly (lets test.js import the app)
